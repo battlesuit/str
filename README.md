@@ -1,7 +1,7 @@
 bs.str
 ======
 
-This small bundle includes most common string conversion functions:
+This tiny bundle includes most common string conversion functions for:
 
 * Camelization
 * Pascalization

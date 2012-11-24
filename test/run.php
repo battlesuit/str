@@ -4,9 +4,9 @@ namespace test_bench {
   
   class PackageTestBench extends Base {
     function initialize() {
-      require 'str_test.php';
+      require 'str/base_test.php';
       
-      $this->add_test(new \strTest());
+      $this->add_test(new \str\BaseTest());
     }
   }
   

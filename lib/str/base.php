@@ -1,8 +1,8 @@
 <?php
+namespace str;
+
 /**
  * Global string helper functions
- * This classname is written in lowercased letters cause it will only serve
- * as an *autoloadable* namespace (static methods only)
  *
  * PHP Version 5.3+
  * @author Thomas Monzel <tm@apparat-hamburg.de>
@@ -10,8 +10,30 @@
  * @package Battlesuit
  * @subpackage str
  */
-class str {
-    
+class Base {
+  protected $origin;
+  protected $modified;
+  
+  function __construct($str = '') {
+    $this->origin = $this->modified = $str;
+  }
+  
+  function origin() {
+    return $this->origin;
+  }
+  
+  function reset() {
+    $this->modified = $this->origin;
+  }
+  
+  function read() {
+    return $this->modified;
+  }
+  
+  function write($str) {
+    $this->__construct($str);
+  }
+  
   /**
    * Turns a whitespace or underscore-separated string into a pascalized
    * form. Its very similar to camelization, except the fact that the first
@@ -21,13 +43,12 @@ class str {
    *  "give me some salt" => "GiveMeSomeSalt"
    *  "have_a_beer" => "HaveABeer"
    *
-   * @static
    * @access public
-   * @param string $str
-   * @return string
+   * @return self
    */
-  static function pascalize($str) {
-    return str_replace(' ', '', ucwords(preg_replace('/(_|-)+/', ' ', $str)));
+  function pascalize($str = null) {
+    $this->modified = str_replace(' ', '', ucwords(preg_replace('/(_|-)+/', ' ', $str ? $str : $this->modified)));
+    return $this;
   }
   
   /**
@@ -37,13 +58,12 @@ class str {
    *  "i_need_some_water" => "I need some water"
    *  "gameSetAndMatch" => "Game set and match"
    *
-   * @static
    * @access public
-   * @param string $str
-   * @return string
+   * @return self
    */
-  static function humanize($str) {
-    return ucfirst(strtolower(preg_replace('/(\p{Ll})(?|(?:_|\\\|\s)*(\p{Lu})|(?:_|\\\|\s)+(\p{Ll}))/', '$1 $2', str_replace('-', ' ', $str))));
+  function humanize($str = null) {
+    $this->modified = ucfirst(strtolower(preg_replace('/(\p{Ll})(?|(?:_|\\\|\s)*(\p{Lu})|(?:_|\\\|\s)+(\p{Ll}))/', '$1 $2', str_replace('-', ' ', $str ? $str : $this->modified))));
+    return $this;
   }
 
   /**
@@ -55,13 +75,13 @@ class str {
    *  "Foo and bar" => "fooAndBar"
    *  "Drink_and_drive" => "drinkAndDrive"
    *
-   * @static
    * @access public
-   * @param string $str
-   * @return string
+   * @return self
    */
-  static function camelize($str) {
-    return lcfirst(self::pascalize($str));
+  function camelize($str = null) {
+    $str = new self($str ? $str : $this->modified);
+    $this->modified = lcfirst($str->pascalize()->read());
+    return $this;
   }
   
   /**
@@ -75,13 +95,12 @@ class str {
    *  "some-dashed--words" => "some_dashed__words"
    *  "whitespaced    string" => "whitespaced_string"
    * 
-   * @static
    * @access public
-   * @param string $str
-   * @return string
+   * @return self
    */
-  static function lowerscore($str) {
-    return strtolower(preg_replace('/(\p{Ll})(?|(?:\s|\\\)*(\p{Lu})|(?:\s|\\\)+(\p{Ll}))/', '$1_$2', str_replace('-', '_', $str)));
+  function lowerscore($str = null) {
+    $this->modified = strtolower(preg_replace('/(\p{Ll})(?|(?:\s|\\\)*(\p{Lu})|(?:\s|\\\)+(\p{Ll}))/', '$1_$2', str_replace('-', '_', $str ? $str : $this->modified)));
+    return $this;
   }
   
   /**
@@ -90,16 +109,17 @@ class str {
    * Example
    *  "ns\to\my\ClassName" => "ClassName" 
    *
-   * @static
    * @access public
-   * @param string $qualified_name
-   * @return string
+   * @return self
    */
-  static function unqualify($qualified_name) {
+  function unqualify($str = null) {
+    $qualified_name = $str ? $str : $this->modified;
     if(($last_backslash_pos = strrpos($qualified_name, '\\')) !== false) {
-      return substr($qualified_name, $last_backslash_pos+1);
-    }
-    return $qualified_name;
+      $this->modified = substr($qualified_name, $last_backslash_pos+1);
+    } else $this->modified = $qualified_name;
+    
+    
+    return $this;
   }
 }
 ?>
