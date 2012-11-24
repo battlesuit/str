@@ -12,6 +12,7 @@ At the current state this class allows:
 
 The battlesuit initor aliases `str\Object` to `Str`  
 If not using the initor just `class_alias('str\Object', 'Str')`
+Everything is hopefully well tested :) (Run tests under test/run.php)
 
 There are three ways to use the given functionalities:
 
