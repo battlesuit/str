@@ -2,7 +2,7 @@
 namespace str;
 
 /**
- * Global string helper functions
+ * Global string object
  *
  * PHP Version 5.3+
  * @author Thomas Monzel <tm@apparat-hamburg.de>
@@ -10,7 +10,7 @@ namespace str;
  * @package Battlesuit
  * @subpackage str
  */
-class Base {
+class Object {
   protected $origin;
   protected $modified;
   
@@ -32,6 +32,10 @@ class Base {
   
   function write($str) {
     $this->__construct($str);
+  }
+  
+  static function new_one($str) {
+    return new self($str);
   }
   
   /**

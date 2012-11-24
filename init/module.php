@@ -2,9 +2,9 @@
 namespace bs {
   $LIB_DIR = dirname(__DIR__)."/lib";
   
-  autoload('str\Base', $LIB_DIR."/str/base.php");
+  autoload('str\Object', $LIB_DIR."/str/object.php");
   require_once $LIB_DIR."/str/functions.php";
   
-  class_alias('str\Base', 'Str');
+  class_alias('str\Object', 'Str');
 }
 ?>

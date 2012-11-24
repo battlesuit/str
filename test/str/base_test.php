@@ -7,7 +7,7 @@ namespace str;
  */
 class BaseTest extends \test_case\Unit {
   function set_up() {
-    $this->str = new Base();
+    $this->str = new Object();
   }
   
   function test_initial_state() {
