@@ -46,6 +46,25 @@ class Object {
   }
   
   /**
+   * Calling a single instance method
+   *
+   * @access public
+   * @param string $method
+   * @param array $arguments
+   * @return Object
+   */
+  function __call($method, array $arguments) {
+    $instance_methods = static::instance_methods();
+    
+    if(method_exists($instance_methods, $method)) {
+      if(!isset($arguments[0])) $arguments[0] = $this->modified;
+      $this->modified = call_user_func_array(array($instance_methods, $method), $arguments);
+    }
+    
+    return $this;
+  }
+  
+  /**
    * To-string conversion is the same as calling read()
    *
    * @access public
@@ -53,6 +72,22 @@ class Object {
    */
   function __toString() {
     return $this->read();
+  }
+  
+  /**
+   * Returns an object containing all instance methods
+   * Its also possible to override the default object
+   *
+   * @static
+   * @access public
+   * @param ObjectMethods $methods
+   * @return ObjectMethods
+   */
+  static function instance_methods(ObjectMethods $methods = null) {
+    static $instance;
+    if(!isset($instance)) $instance = new ObjectMethods();
+    elseif(isset($methods)) $instance = $methods;
+    return $instance;
   }
   
   /**
@@ -70,9 +105,11 @@ class Object {
    * Overrides the modified value with the original one
    *
    * @access public
+   * @return Object
    */
   function reset() {
     $this->modified = $this->origin;
+    return $this;
   }
   
   /**
@@ -92,9 +129,11 @@ class Object {
    * 
    * @access public
    * @param string $str
+   * @return Object
    */
-  function write($str) {
+  function write($str = '') {
     $this->__construct($str);
+    return $this;
   }
   
   /**
@@ -105,98 +144,10 @@ class Object {
    * @static
    * @access public
    * @param string $str
-   * @return self
+   * @return Object
    */
   static function create($str) {
-    return new self($str);
-  }
-  
-  /**
-   * Turns a whitespace or underscore-separated string into a pascalized
-   * form. Its very similar to camelization, except the fact that the first
-   * letter is always upcased
-   *
-   * Example:
-   *  "give me some salt" => "GiveMeSomeSalt"
-   *  "have_a_beer" => "HaveABeer"
-   *
-   * @access public
-   * @return self
-   */
-  function pascalize($str = null) {
-    $this->modified = str_replace(' ', '', ucwords(preg_replace('/(_|-)+/', ' ', $str ? $str : $this->modified)));
-    return $this;
-  }
-  
-  /**
-   * Turns a string into a human readable form
-   *
-   * Example:
-   *  "i_need_some_water" => "I need some water"
-   *  "gameSetAndMatch" => "Game set and match"
-   *
-   * @access public
-   * @return self
-   */
-  function humanize($str = null) {
-    $this->modified = ucfirst(strtolower(preg_replace('/(\p{Ll})(?|(?:_|\\\|\s)*(\p{Lu})|(?:_|\\\|\s)+(\p{Ll}))/', '$1 $2', str_replace('-', ' ', $str ? $str : $this->modified))));
-    return $this;
-  }
-
-  /**
-   * Removing underscores, whitespaces and dashes from the string
-   * Upcase all remaining words except the first
-   *
-   * Example:
-   *  "CamelCasedWords" => "camelCasedWords"
-   *  "Foo and bar" => "fooAndBar"
-   *  "Drink_and_drive" => "drinkAndDrive"
-   *
-   * @access public
-   * @return self
-   */
-  function camelize($str = null) {
-    $str = new self($str ? $str : $this->modified);
-    $this->modified = lcfirst($str->pascalize()->read());
-    return $this;
-  }
-  
-  /**
-   * Turns a camelcased string into a snake cased one
-   * Whitespaces and backslashses will be replaced by one _
-   * Dashes are converted to underscores and its number presists
-   *
-   * Example:
-   *  "PascalizedClassDefinition" => "pascalized_class_definition"
-   *  "my\class\Path" => "my_class_path"
-   *  "some-dashed--words" => "some_dashed__words"
-   *  "whitespaced    string" => "whitespaced_string"
-   * 
-   * @access public
-   * @return self
-   */
-  function lowerscore($str = null) {
-    $this->modified = strtolower(preg_replace('/(\p{Ll})(?|(?:\s|\\\)*(\p{Lu})|(?:\s|\\\)+(\p{Ll}))/', '$1_$2', str_replace('-', '_', $str ? $str : $this->modified)));
-    return $this;
-  }
-  
-  /**
-   * Strips the namespace and returns an the unqualified class name
-   *
-   * Example:
-   *  "ns\to\my\ClassName" => "ClassName" 
-   *
-   * @access public
-   * @return self
-   */
-  function unqualify($str = null) {
-    $qualified_name = $str ? $str : $this->modified;
-    if(($last_backslash_pos = strrpos($qualified_name, '\\')) !== false) {
-      $this->modified = substr($qualified_name, $last_backslash_pos+1);
-    } else $this->modified = $qualified_name;
-    
-    
-    return $this;
+    return new static($str);
   }
 }
 ?>

@@ -14,13 +14,22 @@
 namespace str {
   
   /**
+   * Returns the object methods instance
+   *
+   * @return ObjectMethods
+   */
+  function object_methods() {
+    return Object::instance_methods();
+  }
+  
+  /**
    * Uses Object::pascalize() instance method
    *
    * @param string $str
    * @return string
    */
   function pascalize($str) {
-    return Object::create($str)->pascalize()->read();
+    return object_methods()->pascalize($str);
   }
   
   /**
@@ -30,7 +39,7 @@ namespace str {
    * @return string
    */  
   function camelize($str) {
-    return Object::create($str)->camelize()->read();
+    return object_methods()->camelize($str);
   }
   
   /**
@@ -40,7 +49,7 @@ namespace str {
    * @return string
    */    
   function humanize($str) {
-    return Object::create($str)->humanize()->read();
+    return object_methods()->humanize($str);
   }
   
   /**
@@ -50,7 +59,7 @@ namespace str {
    * @return string
    */    
   function lowerscore($str) {
-    return Object::create($str)->lowerscore()->read();
+    return object_methods()->lowerscore($str);
   }
   
   /**
@@ -60,7 +69,7 @@ namespace str {
    * @return string
    */    
   function unqualify($str) {
-    return Object::create($str)->unqualify()->read();
+    return object_methods()->unqualify($str);
   }
 }
 ?>

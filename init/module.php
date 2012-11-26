@@ -13,6 +13,7 @@ namespace bs {
   
   # autoloadings
   autoload('str\Object', $LIB_DIR."/str/object.php");
+  autoload('str\ObjectMethods', $LIB_DIR."/str/object_methods.php");
   
   # requirements
   require_once $LIB_DIR."/str/functions.php";
