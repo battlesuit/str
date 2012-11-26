@@ -5,7 +5,7 @@ namespace str;
  * @todo complete upcased words are not supported or can cause buggy results
  * 
  */
-class BaseTest extends \test_case\Unit {
+class ObjectTest extends \test_case\Unit {
   function set_up() {
     $this->str = new Object();
   }
@@ -15,16 +15,21 @@ class BaseTest extends \test_case\Unit {
     $this->assert_string($this->str->read());
   }
   
+  function test_to_string() {
+    $this->str->write('hello world');
+    $this->assert_equal("$this->str", 'hello world');
+  }
+  
   function test_write() {
     $this->str->write('hello world');
-    $this->assert_equal($this->str->read(), 'hello world');
+    $this->assert_equal("$this->str", 'hello world');
   }
   
   function test_reset() {
     $str = $this->str;
     
     $str->write('hello world');
-    $this->assert_equal($str->read(), 'hello world');
+    $this->assert_equal("$str", 'hello world');
     $this->assert_equal($str->pascalize()->read(), 'HelloWorld');
     $str->reset();
     $this->assert_equal($str->read(), 'hello world');

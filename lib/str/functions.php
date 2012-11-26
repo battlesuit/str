@@ -1,23 +1,23 @@
 <?php
 namespace str {
   function pascalize($str) {
-    return Object::new_one($str)->pascalize()->read();
+    return Object::create($str)->pascalize()->read();
   }
   
   function camelize($str) {
-    return Object::new_one($str)->camelize()->read();
+    return Object::create($str)->camelize()->read();
   }
   
   function humanize($str) {
-    return Object::new_one($str)->humanize()->read();
+    return Object::create($str)->humanize()->read();
   }
   
   function lowerscore($str) {
-    return Object::new_one($str)->lowerscore()->read();
+    return Object::create($str)->lowerscore()->read();
   }
   
   function unqualify($str) {
-    return Object::new_one($str)->unqualify()->read();
+    return Object::create($str)->unqualify()->read();
   }
 }
 ?>

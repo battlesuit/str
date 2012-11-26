@@ -18,6 +18,10 @@ class Object {
     $this->origin = $this->modified = $str;
   }
   
+  function __toString() {
+    return $this->read();
+  }
+  
   function origin() {
     return $this->origin;
   }
@@ -34,7 +38,7 @@ class Object {
     $this->__construct($str);
   }
   
-  static function new_one($str) {
+  static function create($str) {
     return new self($str);
   }
   

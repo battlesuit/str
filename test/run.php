@@ -1,12 +1,13 @@
 <?php
 namespace test_bench {
   require __DIR__.'/../init/test.php';
+  error_reporting(-1);
   
   class PackageTestBench extends Base {
     function initialize() {
-      require 'str/base_test.php';
+      require 'str/object_test.php';
       
-      $this->add_test(new \str\BaseTest());
+      $this->add_test(new \str\ObjectTest());
     }
   }
   
