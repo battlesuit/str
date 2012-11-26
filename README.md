@@ -23,7 +23,7 @@ There are three ways to use the given functionalities:
     
 ####The Builder-Way
 
-    Str::new_one('have_a_beer')->pascalize()->read(); # => HaveABeer
+    Str::create('have_a_beer')->pascalize()->read(); # => HaveABeer
     
 ####The Function-Way
 
@@ -39,4 +39,12 @@ There are three ways to use the given functionalities:
       humanize('aLongCamelizedString'); # => A long camelized string
       lowerscore('PascalizedClassName'); # => pascalized_class_name
       unqualify('my\long\namespace\to\Foo'); # => Foo
+    }
+    
+####To-String conversion
+
+    namespace str {
+      $str = new Str('simon says');
+      $str->pascalize();
+      echo "$str"; # => displays SimonSays
     }
