@@ -4,6 +4,11 @@ namespace str;
 /**
  * Global string object
  *
+ * Example:
+ *  $str = new str\Object('hello world');
+ *  $str->pascalize();
+ *  echo "$str"; # displays "HelloWorld"
+ *
  * PHP Version 5.3+
  * @author Thomas Monzel <tm@apparat-hamburg.de>
  * @version $Revision$
@@ -11,33 +16,97 @@ namespace str;
  * @subpackage str
  */
 class Object {
+  
+  /**
+   * Holds the original unmodified string
+   *
+   * @access protected
+   * @var string
+   */
   protected $origin;
+  
+  /**
+   * The modified string
+   * Modifications can be made by methods like camelize, humanize...
+   * 
+   * @access protected
+   * @var string
+   */
   protected $modified;
   
+  /**
+   * Instance construction
+   * Sets origin and modified values
+   *
+   * @access public
+   * @param string $str
+   */
   function __construct($str = '') {
-    $this->origin = $this->modified = $str;
+    $this->origin = $this->modified = (string)$str;
   }
   
+  /**
+   * To-string conversion is the same as calling read()
+   *
+   * @access public
+   * @return string
+   */
   function __toString() {
     return $this->read();
   }
   
+  /**
+   * Returns the original string value without modifications
+   *
+   * @access public
+   * @return string
+   */
   function origin() {
     return $this->origin;
   }
   
+  /**
+   * Resetting the string to its original
+   * Overrides the modified value with the original one
+   *
+   * @access public
+   */
   function reset() {
     $this->modified = $this->origin;
   }
   
+  /**
+   * Returns the actual modified value
+   *
+   * @access public
+   * @return string
+   */
   function read() {
     return $this->modified;
   }
   
+  /**
+   * Same as __construct()
+   * This method replaces the current string with a complete new one
+   * So origin and modified values are overridden
+   * 
+   * @access public
+   * @param string $str
+   */
   function write($str) {
     $this->__construct($str);
   }
   
+  /**
+   * Quickbuilder method
+   * So you are able to do someting like Object::create('simon says')->lowerscore();
+   * As of PHP 5.4 you can do it without it by doing (new Object('simon says'))->lowerscore();
+   * 
+   * @static
+   * @access public
+   * @param string $str
+   * @return self
+   */
   static function create($str) {
     return new self($str);
   }
@@ -47,7 +116,7 @@ class Object {
    * form. Its very similar to camelization, except the fact that the first
    * letter is always upcased
    *
-   * Example
+   * Example:
    *  "give me some salt" => "GiveMeSomeSalt"
    *  "have_a_beer" => "HaveABeer"
    *
@@ -62,7 +131,7 @@ class Object {
   /**
    * Turns a string into a human readable form
    *
-   * Example
+   * Example:
    *  "i_need_some_water" => "I need some water"
    *  "gameSetAndMatch" => "Game set and match"
    *
@@ -78,7 +147,7 @@ class Object {
    * Removing underscores, whitespaces and dashes from the string
    * Upcase all remaining words except the first
    *
-   * Example
+   * Example:
    *  "CamelCasedWords" => "camelCasedWords"
    *  "Foo and bar" => "fooAndBar"
    *  "Drink_and_drive" => "drinkAndDrive"
@@ -114,7 +183,7 @@ class Object {
   /**
    * Strips the namespace and returns an the unqualified class name
    *
-   * Example
+   * Example:
    *  "ns\to\my\ClassName" => "ClassName" 
    *
    * @access public
