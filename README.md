@@ -43,8 +43,7 @@ There are three ways to use the given functionalities:
     
 ####To-String conversion
 
-    namespace str {
-      $str = new Str('simon says');
-      $str->pascalize();
-      echo "$str"; # => displays SimonSays
-    }
+    $str = new Str('simon says');
+    $str->pascalize();
+    echo "$str"; # => displays SimonSays
+
