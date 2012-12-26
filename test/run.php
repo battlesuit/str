@@ -1,6 +1,6 @@
 <?php
 namespace test_bench {
-  require __DIR__.'/../init/test.php';
+  require "loader.php";
   error_reporting(-1);
   
   class PackageTestBench extends Base {
